@@ -2,6 +2,11 @@
   "name": "dummage",
   "version": "0.0.1",
   "description": "dummy image generator",
+  "homepage": "http://github.com/satkaku/dummage",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/satkaku/dummage.git"
+  },
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

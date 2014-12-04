@@ -2,31 +2,38 @@ var fs = require("fs");
 var mime = require("mime");
 var glob = require("glob");
 
-var RESOURCE_PATH = "./img"
+var RESOURCE_PATH = "./img";
+var BLANK_PATH = RESOURCE_PATH+"/blank/blank.png";
 
 module.exports = Dummage;
 
 function Dummage(opts) {
 	opts = opts || {};
+
 	if (!(this instanceof Dummage)) return new Dummage(opts);
 	this.root = opts.root || "dummage";
 }
 
 Dummage.prototype.any = function(cb) {
-	glob("./img/*/*", function(err, files){
-		var file = files[ Math.floor(Math.random()*files.length) ];
+	_random("./img/*/*", function(err, file){
 		_readFile(file, cb);
 	});
 }
 
 Dummage.prototype.blank = function(cb) {
-	_readFile(RESOURCE_PATH+"/blank/blank.png", cb);
+	_readFile(BLANK_PATH, cb);
 }
 
 Dummage.prototype.routes = function(path, cb) {
-	glob("./img/"+path+"/*", function(err, files){
-		var file = files[ Math.floor(Math.random()*files.length) ];
+	_random("./img/"+path+"/*", function(err, file){
 		_readFile(file, cb);
+	});
+}
+
+function _random(path, cb) {
+	glob(path, function(err, files){
+		var file = files[ Math.floor(Math.random()*files.length) ];
+		cb(err, file);
 	});
 }
 
@@ -39,15 +46,19 @@ Dummage.prototype.middleware = function() {
 
 		var command = tokens[1];
 		if ( (typeof self[command]) !== "function" ) {
-			self.routes(command, function(err, file){
-				res.writeHead(200, { "Content-Type": file.mime });
-				res.end(file.buf, "binary");
-			});	
+			self.routes(command, _response);
 		} else {
-			self[command](function(err, file){
-				res.writeHead(200, { "Content-Type": file.mime });
-				res.end(file.buf, "binary");
-			});	
+			self[command](_response);	
+		}
+
+		function _response(err, data) {
+			if (err) {
+				res.writeHead(500);
+				res.end();
+				return;
+			}
+			res.writeHead(200, { "Content-Type": data.mime });
+			res.end(data.buf, "binary");
 		}
 
 	};
@@ -55,6 +66,7 @@ Dummage.prototype.middleware = function() {
 
 
 function _readFile(path, cb) {
+	if (!path) { path = BLANK_PATH; }
 	var _mime = mime.lookup(path);
 	fs.readFile(path, function(err,data){
 		cb(err, { buf: data, mime: _mime });
