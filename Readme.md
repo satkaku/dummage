@@ -21,7 +21,8 @@ dummage.routes("person", function(err, data){
 ```
 
 ## use Express
-```nodejs
+```javascript
+var dummage = require("dummage")();
 var app = require("express")();
 app.use( dummage.middleware() );
 app.listen(3000, function(){
@@ -29,11 +30,11 @@ app.listen(3000, function(){
 });
 ```
 
-+ http://localhost:3000/dummage/any random image
++ `http://localhost:3000/dummage/any`: random image
 
-+ http://localhost:3000/dummage/blank blank image
++ `http://localhost:3000/dummage/blank`: blank image
 
-+ http://localhost:3000/dummage/person random person image
++ `http://localhost:3000/dummage/person`: random person image
 
 ## Option
 - `root`: dummy image path root (dafault: "dummage")
