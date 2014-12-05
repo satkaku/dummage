@@ -22,24 +22,6 @@ npm install dummage
 And, add some image to "./img/#{theme}",
 you can get "/dummage/#{theme}".
 
-## Example
-
-```javascript
-var dummage = require("dummage")();
-
-dummage.any(function(err,data){
-	// random image
-});
-dummage.blank(function(err, data){
-	// blank image
-});
-
-dummage.routes("person", function(err, data){
-	// random person image
-});
-
-```
-
 ## use Express
 ```javascript
 var dummage = require("dummage")();
@@ -55,6 +37,26 @@ app.listen(3000, function(){
 + `http://localhost:3000/dummage/blank`: blank image
 
 + `http://localhost:3000/dummage/person`: random person image
+
++ `http://localhost:3000/dummage/person/300x200`: random person image(crop 300px x 200px)
+
+## without Express
+
+```javascript
+var dummage = require("dummage")();
+
+dummage.any(null,function(err,data){
+	// random image
+});
+dummage.blank(null,function(err, data){
+	// blank image
+});
+
+dummage.routes("person", null, function(err, data){
+	// random person image
+});
+
+```
 
 ## Option
 - `root`: dummy image path root (dafault: "dummage")

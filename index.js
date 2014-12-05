@@ -3,7 +3,7 @@ var mime = require("mime");
 var glob = require("glob");
 var gm = require("gm");
 
-var RESOURCE_PATH = "./img";
+var RESOURCE_PATH = __dirname + "/img";
 var BLANK_PATH = RESOURCE_PATH+"/blank/blank.png";
 
 module.exports = Dummage;
@@ -16,20 +16,20 @@ function Dummage(opts) {
 }
 
 Dummage.prototype.any = function(size, cb) {
-	_random("./img/*/*", function(err, file){
+	_random(RESOURCE_PATH+"/*/*", function(err, file){
 		_readFile(file, size, cb);
 	});
-}
+};
 
 Dummage.prototype.blank = function(size, cb) {
 	_readFile(BLANK_PATH, size, cb);
-}
+};
 
-Dummage.prototype.routes = function(size, path, cb) {
-	_random("./img/"+path+"/*", function(err, file){
+Dummage.prototype.routes = function(command, size, cb) {
+	_random(RESOURCE_PATH+"/"+command+"/*", function(err, file){
 		_readFile(file, size, cb);
 	});
-}
+};
 
 Dummage.prototype.middleware = function() {
 	var self = this;
@@ -50,7 +50,7 @@ Dummage.prototype.middleware = function() {
 		if ( (typeof self[command]) !== "function" ) {
 			self.routes(command, size, _response);
 		} else {
-			self[command](size, _response);	
+			self[command](size, _response);
 		}
 
 		function _response(err, data) {
@@ -64,7 +64,7 @@ Dummage.prototype.middleware = function() {
 		}
 
 	};
-}
+};
 
 function _random(path, cb) {
 	glob(path, function(err, files){
@@ -78,7 +78,7 @@ function _readFile(path, size, cb) {
 	var _mime = mime.lookup(path);
 
 	var buf = require('fs').readFileSync(path);
-	var convert = gm(buf, path.split("/").slice(-1) )
+	var convert = gm(buf, path.split("/").slice(-1) );
 	
 	if (size) {
 		convert.gravity("Center").crop(size._w, size._h);
