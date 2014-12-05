@@ -47,7 +47,17 @@ npm install dummage
 And, add some image to "./img/#{theme}",
 you can get "/dummage/#{theme}".
 
-I will add default photos(free use) that I take.
+## Photo
++ https://unsplash.com/
++ http://www.pexels.com/
++ http://www.gratisography.com/
+
+Thanks to these website.
+
+To reduce module size
+```bash
+find . -name "*jpg" -exec convert {} -resize 640x640 {} \;  
+```
 
 ## size change
 ```css
