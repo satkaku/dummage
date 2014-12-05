@@ -1,6 +1,6 @@
 {
   "name": "dummage",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "dummy image generator",
   "homepage": "http://github.com/satkaku/dummage",
   "repository": {
@@ -15,6 +15,7 @@
   "license": "MIT",
   "dependencies": {
     "glob": "^4.3.1",
+    "gm": "^1.17.0",
     "mime": "^1.2.11"
   }
 }

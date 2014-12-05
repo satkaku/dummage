@@ -2,6 +2,26 @@
 
 dummage is a dummy image generator
 
+## Getting started
+
+This module depends on [gm](https://www.npmjs.org/package/gm), so first,
+you should download and install [GraphicsMagick](http://www.graphicsmagick.org/).
+
+In Mac OS X
+
+```
+brew install graphicsmagick
+```
+
+then
+
+```
+npm install dummage
+```
+
+And, add some image to "./img/#{theme}",
+you can get "/dummage/#{theme}".
+
 ## Example
 
 ```javascript
@@ -39,14 +59,6 @@ app.listen(3000, function(){
 ## Option
 - `root`: dummy image path root (dafault: "dummage")
 
-## Install
-```
-npm install dummage
-```
-
-And, add some image to "./img/#{theme}",
-you can get "/dummage/#{theme}".
-
 ## Photo
 + https://unsplash.com/
 + http://www.pexels.com/
@@ -59,10 +71,8 @@ To reduce module size
 find . -name "*jpg" -exec convert {} -resize 640x640 {} \;  
 ```
 
-## size change
-```css
-img { width: 100px; height: 100px; }
-```
+## crop
++ `http://localhost:3000/dummage/any/400x200`: crop image (gravity is "Center")
 
 ## Why I make this ?
 Yes, there are many dummy image service, but I think those are too slowly to give a presentation of prototype. I need more quicky dummy image generator.
