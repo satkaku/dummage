@@ -15,19 +15,19 @@ function Dummage(opts) {
 	this.root = opts.root || "dummage";
 }
 
-Dummage.prototype.any = function(size, cb) {
+Dummage.prototype.any = function(cb, size) {
 	_random(RESOURCE_PATH+"/*/*", function(err, file){
-		_readFile(file, size, cb);
+		_readFile(file, cb, size);
 	});
 };
 
-Dummage.prototype.blank = function(size, cb) {
-	_readFile(BLANK_PATH, size, cb);
+Dummage.prototype.blank = function(cb, size) {
+	_readFile(BLANK_PATH, cb, size);
 };
 
-Dummage.prototype.routes = function(command, size, cb) {
+Dummage.prototype.routes = function(command, cb, size) {
 	_random(RESOURCE_PATH+"/"+command+"/*", function(err, file){
-		_readFile(file, size, cb);
+		_readFile(file, cb, size);
 	});
 };
 
@@ -48,9 +48,9 @@ Dummage.prototype.middleware = function() {
 		}
 
 		if ( (typeof self[command]) !== "function" ) {
-			self.routes(command, size, _response);
+			self.routes(command, _response, size);
 		} else {
-			self[command](size, _response);
+			self[command](_response, size);
 		}
 
 		function _response(err, data) {
@@ -73,7 +73,7 @@ function _random(path, cb) {
 	});
 }
 
-function _readFile(path, size, cb) {
+function _readFile(path, cb, size) {
 	if (!path) { path = BLANK_PATH; }
 	var _mime = mime.lookup(path);
 

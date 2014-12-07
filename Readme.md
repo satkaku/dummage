@@ -45,14 +45,14 @@ app.listen(3000, function(){
 ```javascript
 var dummage = require("dummage")();
 
-dummage.any(null,function(err,data){
+dummage.any(function(err,data){
 	// random image
 });
-dummage.blank(null,function(err, data){
+dummage.blank(function(err, data){
 	// blank image
 });
 
-dummage.routes("person", null, function(err, data){
+dummage.routes("person", function(err, data){
 	// random person image
 });
 
