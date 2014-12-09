@@ -76,5 +76,11 @@ find . -name "*jpg" -exec convert {} -resize 640x640 {} \;
 ## crop
 + `http://localhost:3000/dummage/any/400x200`: crop image (gravity is "Center")
 
+## colorize
+"colorize" use [gm#colorize](http://aheckmann.github.io/gm/docs.html#colorize)
++ `http://localhost:3000/dummage/any:0x001313`: colorize image (to Red)
++ `http://localhost:3000/dummage/any:0x001313/600x200`: colorize image and crop
+you can add hex after ":". Then separate hex to RGB.
+
 ## Why I make this ?
 Yes, there are many dummy image service, but I think those are too slowly to give a presentation of prototype. I need more quicky dummy image generator.
