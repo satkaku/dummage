@@ -15,14 +15,14 @@ function Dummage(opts) {
 	this.root = opts.root || "dummage";
 }
 
-Dummage.prototype.any = function(cb, size, color) {
+Dummage.prototype.any = function(cb, opts) {
 	_random(RESOURCE_PATH+"/*/*", function(err, file){
-		_readFile(file, cb, size, color);
+		_readFile(file, cb, opts);
 	});
 };
 
-Dummage.prototype.blank = function(cb, size) {
-	_readFile(BLANK_PATH, cb, size);
+Dummage.prototype.blank = function(cb, opts) {
+	_readFile(BLANK_PATH, cb, opts);
 };
 
 Dummage.prototype.routes = function(command, cb, size, color) {
@@ -38,22 +38,9 @@ Dummage.prototype.middleware = function() {
 		var tokens = req.path.slice(1).split("/");
 		if ( tokens[0] !== self.root ) { return next(); }
 
-		var command = tokens[1];
-		var color = command.split(":")[1];
-		command = command.split(":")[0];
+		var opts = self.parse(tokens);
 
-		var size = tokens[2];
-		if ( size && /^[0-9]+x[0-9]+$/.test(size) ) {
-			size = { _w: size.split("x")[0], _h: size.split("x")[1] };
-		} else {
-			size = null;
-		}
-
-		if ( (typeof self[command]) !== "function" ) {
-			self.routes(command, _response, size, color);
-		} else {
-			self[command](_response, size, color);
-		}
+		self[opts.command](_response, opts);
 
 		function _response(err, data) {
 			if (err) {
@@ -67,6 +54,35 @@ Dummage.prototype.middleware = function() {
 
 	};
 };
+Dummage.prototype.parse = function(tokens) {
+	var command,size,color;
+
+	
+	var firstToken = tokens[1].split(":");
+	if ( firstToken.length > 1 ) {
+		var _colorHex = firstToken[1];
+		color = {
+			r : _colorHex >> 16 & 0xFF,
+			g : _colorHex >> 8 & 0xFF,
+			b : _colorHex & 0xFF
+		};
+	}
+	command = firstToken[0];
+
+	if ( (typeof this[command]) !== "function" ) {
+		command = "routes";
+	}
+
+	var secondToken = tokens[2];
+	if ( secondToken && /^[0-9]+x[0-9]+$/.test(secondToken) ) {
+		size = { _w: secondToken.split("x")[0], _h: secondToken.split("x")[1] };
+	}
+
+	return {
+		command: command, size: size, color: color
+	};
+};
+
 
 function _random(path, cb) {
 	glob(path, function(err, files){
@@ -75,22 +91,19 @@ function _random(path, cb) {
 	});
 }
 
-function _readFile(path, cb, size, color) {
+function _readFile(path, cb, opts) {
 	if (!path) { path = BLANK_PATH; }
 	var _mime = mime.lookup(path);
 
 	var buf = require('fs').readFileSync(path);
 	var convert = gm(buf, path.split("/").slice(-1) );
 	
-	if (size) {
-		convert.gravity("Center").crop(size._w, size._h);
+	if (opts.size) {
+		convert.gravity("Center").crop(opts.size._w, opts.size._h);
 	}
 
-	if (color) {
-		var r = color >> 16 & 0xFF;
-		var g = color >> 8 & 0xFF;
-		var b = color & 0xFF;
-		convert.colorize(r,g,b);
+	if (opts.color) {
+		convert.colorize(opts.color.r,opts.color.g,opts.color.b);
 	}
 
 	convert.toBuffer(function (err, buffer) {
