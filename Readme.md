@@ -22,21 +22,6 @@ npm install dummage
 And, add some image to "./img/#{theme}",
 you can get "/dummage/#{theme}".
 
-## use stand-alone
-If you want to use dummage with stand-alone mode
-
-```
-npm install -g dummage
-```
-
-Then you can use Commandline Interface.
-
-```
-% dummage -p 8888
-```
-
-You can access http://localhost:8888/dummage/any and so on.
-
 ## use Express
 ```javascript
 var dummage = require("dummage")();
@@ -96,6 +81,23 @@ find . -name "*jpg" -exec convert {} -resize 640x640 {} \;
 + `http://localhost:3000/dummage/any:0x001313`: colorize image (to Red)
 + `http://localhost:3000/dummage/any:0x001313/600x200`: colorize image and crop
 you can add hex after ":". Then separate hex to RGB.
+
+
+## use stand-alone
+If you want to use dummage with stand-alone mode
+
+```
+npm install -g dummage
+```
+
+Then you can use Commandline Interface.
+
+```
+% dummage -p 8888
+```
+
+You can access http://localhost:8888/dummage/any and so on.
+
 
 ## Why I make this ?
 Yes, there are many dummy image service, but I think those are too slowly to give a presentation of prototype. I need more quicky dummy image generator.
