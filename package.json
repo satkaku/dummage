@@ -1,6 +1,6 @@
 {
   "name": "dummage",
-  "version": "0.0.5",
+  "version": "0.2.0",
   "description": "dummy image generator",
   "homepage": "http://github.com/satkaku/dummage",
   "repository": {
@@ -11,9 +11,14 @@
   "scripts": {
     "test": "mocha ./test/*"
   },
+  "bin": {
+    "dummage": "standalone.js"
+  },
   "author": "satkaku",
   "license": "MIT",
   "dependencies": {
+    "commander": "^2.7.0",
+    "express": "^4.12.2",
     "glob": "^4.3.1",
     "gm": "^1.17.0",
     "mime": "^1.2.11"

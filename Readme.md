@@ -22,6 +22,21 @@ npm install dummage
 And, add some image to "./img/#{theme}",
 you can get "/dummage/#{theme}".
 
+## use stand-alone
+If you want to use dummage with stand-alone mode
+
+```
+npm install -g dummage
+```
+
+Then you can use Commandline Interface.
+
+```
+% dummage -p 8888
+```
+
+You can access http://localhost:8888/dummage/any and so on.
+
 ## use Express
 ```javascript
 var dummage = require("dummage")();
